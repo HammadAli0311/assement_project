@@ -13,12 +13,15 @@ class MovieProvider extends ChangeNotifier{
   bool wait=false;
 
 
-  getMovies() async
+
+  Future getMovies() async
   {
+  List<MovieModel> list=[];
     wait=true;
     var response=await http.get(Uri.parse(moviesApi));
     var data=jsonDecode(response.body)["results"];
-    data.forEach((element)=>allMovies.add(MovieModel(title: element["original_title"], id: element["id"], overview: element["overview"], backdropPath: element["backdrop_path"],releaseDate: element["release_date"], posterPath: element["poster_path"])));
+    data.forEach((element)=>list.add(MovieModel(title: element["original_title"], id: element["id"], overview: element["overview"], backdropPath: element["backdrop_path"],releaseDate: element["release_date"], posterPath: element["poster_path"])));
+    allMovies=list;
     wait=false;
     notifyListeners();
   }
