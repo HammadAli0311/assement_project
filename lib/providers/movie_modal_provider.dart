@@ -13,7 +13,7 @@ class MovieProvider extends ChangeNotifier{
   bool wait=false;
 
 
-  void getMovies() async
+  getMovies() async
   {
     wait=true;
     var response=await http.get(Uri.parse(moviesApi));

@@ -21,17 +21,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   TextEditingController searchController= TextEditingController();
 
-
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<MovieProvider>(context,listen: false).getMovies();
-  }
-
   @override
   Widget build(BuildContext context) {
     double height=MediaQuery.of(context).size.height;
     double width=MediaQuery.of(context).size.width;
+    Provider.of<MovieProvider>(context,listen: false).getMovies();
     return Scaffold(
       appBar: AppBar(
         title: PreferredSize(preferredSize: Size.fromHeight(height*.02), child: Padding(

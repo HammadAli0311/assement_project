@@ -86,7 +86,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   SizedBox(height: 10,),
                   Consumer<MovieProvider>(
                     builder: (context,genres,child)=>SizedBox(
-                      height: height*.05,
+                      height: height*.04,
                       child: ListView.builder(
 
                         shrinkWrap: true,
