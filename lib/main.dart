@@ -21,7 +21,8 @@ void main() {
         appBarTheme: AppBarTheme(
          elevation: 0.0,
           color: whiteColor,
-        )
+        ),
+
       ),
       home:SearchScreen(),
       routes: {
