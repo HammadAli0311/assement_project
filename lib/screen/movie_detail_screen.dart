@@ -8,6 +8,7 @@ import 'package:assemement_test/providers/video_provider.dart';
 import 'package:assemement_test/screen/seat_mapping_ui.dart';
 import 'package:assemement_test/screen/video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../apis.dart';
@@ -30,17 +31,26 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   void initState() {
     super.initState();
     setState((){
+      DeviceOrientation.portraitDown;
       String id=Provider.of<VideoProvider>(context,listen: false).id;
-      print(id);
-      _controller=YoutubePlayerController()
+      _controller=YoutubePlayerController(
+        params: const YoutubePlayerParams(
+          showVideoAnnotations: false,
+          showControls: true,
+          showFullscreenButton: true,
+          loop:false,
+          enableCaption: false,
+        )
+      )
         ..onInit = () {
           if (autoPlay) {
             _controller.loadVideoById(videoId: id, startSeconds: 0);
           } else {
             _controller.cueVideoById(videoId: id, startSeconds: 0);
           }
-        };
+        }..playerState.whenComplete(() => Navigator.of(context).pop());
     });
+    _controller.playerState.whenComplete(() => Navigator.of(context).pop());
 
   }
 
@@ -49,6 +59,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     final movieModal = ModalRoute.of(context)!.settings.arguments as MovieModel;
+
     Provider.of<MovieProvider>(context, listen: false).getGenres(movieModal.id);
     return Scaffold(
       body: SingleChildScrollView(
@@ -57,11 +68,22 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           children: [
             Stack(
               children: [
-                Image.network(
-                  '${imagePath + movieModal.posterPath}?api_key=${apikey}',
-                  height: height * .65,
+                FadeInImage(
                   fit: BoxFit.fill,
+                  imageErrorBuilder: (context,Object,StackTrace){
+                    return Image.asset(
+                        "assets/image.png"
+                    );
+                  },
+                  image: NetworkImage(
+                    '${imagePath + movieModal.posterPath}?api_key=${apikey}',
+                  ),
+                  placeholder: AssetImage(
+                      "assets/image.png"
+                  ),
+                  height: height * .65,
                   width: double.infinity,
+
                 ),
                 Positioned(
                     top: height * .02,
@@ -94,7 +116,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     right: width * .15,
                     child: GestureDetector(
                       onTap: () =>
-                          Navigator.pushNamed(context, SeatMapping.routeName),
+                          Navigator.pushNamed(context, SeatMapping.routeName,arguments: movieModal.title),
                       child: buttonContainer(
                           BoxDecoration(
                             color: blueColor,

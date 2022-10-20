@@ -10,7 +10,6 @@ import 'package:assemement_test/screen/seat_mapping_ui.dart';
 import 'package:assemement_test/screen/video_player.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'constant/theme.dart';
 import 'package:provider/provider.dart';

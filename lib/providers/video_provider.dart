@@ -8,11 +8,10 @@ class VideoProvider extends ChangeNotifier{
 
 
   void getVideoId(String movieId) async{
-    print('$allVideosApi$movieId''/videos?api_key=$apikey');
+
     var response=await http.get(Uri.parse('$allVideosApi$movieId''/videos?api_key=$apikey'));
     var data=jsonDecode(response.body)["results"];
     id=data[0]["key"];
-    print(id);
     notifyListeners();
   }
 }

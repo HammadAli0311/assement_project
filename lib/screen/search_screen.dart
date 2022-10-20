@@ -117,12 +117,23 @@ class _SearchScreenState extends State<SearchScreen> {
                                           ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
-                                              child: Image.network(
-                                                imagePath +
-                                                    movie.allMovies[index]
-                                                        .posterPath,
-                                                width: width / 3,
-                                                fit: BoxFit.fill,
+                                              child: FadeInImage(
+                                                  width: width / 3,
+                                                  fit: BoxFit.fill,
+                                                imageErrorBuilder: (context,Object,StackTrace){
+                                                 return Image.asset(
+                                                      "assets/image.png"
+                                                  );
+                                                },
+                                                image: NetworkImage(
+                                                  imagePath +
+                                                      movie.allMovies[index]
+                                                          .posterPath,
+                                                ),
+                                                placeholder: AssetImage(
+                                                  "assets/image.png"
+                                                ),
+
                                               )),
                                           Expanded(
                                               child: ListTile(
