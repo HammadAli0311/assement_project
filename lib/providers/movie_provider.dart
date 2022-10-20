@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 
 class MovieProvider extends ChangeNotifier{
   List<MovieModel> allMovies=[];
+  List<MovieModel> search=[];
   List<String> genres=[];
   bool wait=false;
 
@@ -21,6 +22,7 @@ class MovieProvider extends ChangeNotifier{
     var data=jsonDecode(response.body)["results"];
     data.forEach((element)=>list.add(MovieModel(title: element["original_title"], id: element["id"], overview: element["overview"], backdropPath: element["backdrop_path"],releaseDate: element["release_date"], posterPath: element["poster_path"])));
     allMovies=list;
+    search=allMovies;
     notifyListeners();
   }
 
@@ -30,6 +32,10 @@ class MovieProvider extends ChangeNotifier{
     var data=jsonDecode(response.body)["genres"];
     data.forEach((element)=>list.add(element["name"]));
     genres=list;
+    notifyListeners();
+  }
+  Future searchFunc(String text) async{
+    allMovies=text.isEmpty ? search: search.where((element) => element.title.toLowerCase().contains(text.toLowerCase())).toList();
     notifyListeners();
   }
 }

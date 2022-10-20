@@ -32,7 +32,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     super.initState();
     setState((){
       DeviceOrientation.portraitDown;
-      String id=Provider.of<VideoProvider>(context,listen: false).id;
+      String id=Provider.of<VideoProvider>(context,listen: false).videoId;
       _controller=YoutubePlayerController(
         params: const YoutubePlayerParams(
           showVideoAnnotations: false,

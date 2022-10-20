@@ -44,14 +44,20 @@ class _SearchScreenState extends State<SearchScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: TextField(
               controller: searchController,
+              onChanged: (val){
+                Provider.of<MovieProvider>(context,listen: false).searchFunc(val);
+            },
               decoration: InputDecoration(
                 prefixIcon: searchIcon,
-                suffixIcon: closeIcon,
+                suffixIcon: GestureDetector(child: closeIcon,onTap: ()=>{
+                  searchController.clear(),
+                },),
                 contentPadding: EdgeInsets.symmetric(vertical: 5.0),
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(50.0),
                 ),
+
                 filled: true,
                 fillColor: textBackgroundColor,
                 hintText: "TV shows, movies and more",

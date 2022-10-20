@@ -15,10 +15,7 @@ import 'constant/theme.dart';
 import 'package:provider/provider.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  // SystemChrome.setSystemUIOverlayStyle(
-  //   const SystemUiOverlayStyle(
-  //   ),
-  // );
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context)=> MovieProvider()),
