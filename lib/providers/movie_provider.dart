@@ -9,29 +9,33 @@ import 'package:http/http.dart' as http;
 
 class MovieProvider extends ChangeNotifier{
   List<MovieModel> allMovies=[];
+  List<MovieModel> search=[];
   List<String> genres=[];
   bool wait=false;
 
 
-  getMovies() async
+
+  Future getMovies() async
   {
-    wait=true;
+  List<MovieModel> list=[];
     var response=await http.get(Uri.parse(moviesApi));
     var data=jsonDecode(response.body)["results"];
-    data.forEach((element)=>allMovies.add(MovieModel(title: element["original_title"], id: element["id"], overview: element["overview"], backdropPath: element["backdrop_path"],releaseDate: element["release_date"], posterPath: element["poster_path"])));
-    wait=false;
+    data.forEach((element)=>list.add(MovieModel(title: element["original_title"], id: element["id"], overview: element["overview"], backdropPath: element["backdrop_path"],releaseDate: element["release_date"], posterPath: element["poster_path"])));
+    allMovies=list;
+    search=allMovies;
     notifyListeners();
   }
 
-  void getGenres(int movieId) async{
+  Future getGenres(int movieId) async{
   List<String> list=[];
-    wait =true;
     var response=await http.get(Uri.parse("https://api.themoviedb.org/3/movie/$movieId?api_key=$apikey"));
     var data=jsonDecode(response.body)["genres"];
-    print(data);
     data.forEach((element)=>list.add(element["name"]));
     genres=list;
     notifyListeners();
-    print(genres);
+  }
+  Future searchFunc(String text) async{
+    allMovies=text.isEmpty ? search: search.where((element) => element.title.toLowerCase().contains(text.toLowerCase())).toList();
+    notifyListeners();
   }
 }
